@@ -1,0 +1,35 @@
+{% extends "base_template.html" %}
+{% block content %}
+	<h1>Teacher</h1>
+	<form method="post">
+		<div>Teacher Name:<input name="teacher_name"></div>
+		<div>Department:
+			<select name="department">
+				{% for department in departments %}
+				<option value="{{department.key().id()}}">{{department.department_name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div>
+			Teaching Time:
+			<input name="teaching_time">
+			<div style="color:#777">
+				{'sunday': [1,2,3,5,6], 'tuesday':[7]"}
+			</div>
+		</div>
+<!-- 		<div>
+			Class Courses:
+			<input name="class_courses">
+			<div style="color:#777">
+				[classcourseid_int, classcourse_str]
+			</div>
+
+			<div>
+				{% for classcourse in class_courses %}
+				<div>{{classcourse.key().id()}} {{classcourse.faculty}} {{classcourse.year}} {{classcourse.semester}} {{classcourse.course}}</div>
+				{% endfor %}
+			</div>
+		</div> -->
+		<div><input type="submit"></div>
+	</form>
+{% endblock %}

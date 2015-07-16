@@ -1,0 +1,50 @@
+{% extends "base_template.html" %}
+{% block content %}
+	<h1>Class Course</h1>
+	<form method="post">
+		<div>
+			<!-- Faculty: <input name = "faculty"> -->
+			Faculty: 
+			<select name="faculty">
+				{% for faculty in faculties %}
+					<option value="{{faculty.key().name()}}">{{faculty.key().name()}} {{faculty.faculty_name}}</option>
+				{% endfor %}	
+			</select>
+		</div>
+		<div>
+			Year:
+			<select name="year">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+			</select>
+		</div>
+		<div>
+			Semester:
+			<select name="semester">
+				<option value="1">I</option>
+				<option value="2">II</option>
+			</select>
+		</div>
+		<div>
+			Course (separated by comma): <input name = "course">
+			<!-- Course: -->
+			<br>
+			Choose from:
+			<br> 
+			{% for course in courses %}
+				{{course.key().name()}} {{course.course_name}}<br>
+			{% endfor %}
+
+
+			{% for teacher in teachers %}
+				{{teacher.key().id()}} {{teacher.teacher_name}}<br>
+			{% endfor %}
+
+		</div>
+		<div>
+			<input type="submit">
+		</div>
+	</form>
+{% endblock %}

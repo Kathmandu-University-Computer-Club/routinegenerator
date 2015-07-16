@@ -1,0 +1,171 @@
+button::-moz-focus-inner {
+  border: 0;
+  outline: 0 none !important;
+}
+
+a {
+	outline: 0 none !important;
+}
+
+form {
+
+}
+
+	form label {
+		float: left;
+		padding: 10px 0;
+	}
+
+	form label.clear {
+		clear: both;
+	}
+
+	form label + label:not(.clear) {
+		margin-left: 10px;
+	}
+
+		strong {
+			display: block;
+			font-size: .9em;
+			padding: 5px 0;
+			
+		}
+
+		form label strong {
+			/*opacity: .5;*/
+			color: #aaa;
+			transform-origin: 0;
+			transform: translateY(2em) translateX(5px);
+			transition: 400ms;
+		}
+
+		form label.hasContent strong {
+			/*opacity: 1;*/
+			color: #106CC8;
+			transform: translateY(0px) translateX(0px);
+		}
+
+		form label input {
+			display: block;
+			padding: 5px;
+			outline: none;
+			border: 0;
+			border-bottom: 1px solid #ddd;
+		}
+
+			form label input + .underline {
+				width: 0;
+				height: 2px;
+				background: #106CC8;
+				margin: 0 auto;
+				transition: width 100ms;
+				margin-top: -1px;
+			}
+
+			form label input:focus + .underline {
+				width: 100%;
+				transition: width 400ms;
+			}
+
+			button {
+				border: 0;
+				background: transparent;
+				cursor: pointer;
+				outline: none;
+				padding: 10px 20px;
+				font-weight: 700;
+				border-radius: 3px;
+				background: rgb(200,200,200);
+				box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+				transition: 400ms;
+				color: #fff;
+				position: relative;
+				overflow: hidden;
+				text-transform: uppercase;
+			}
+				form button span {
+					z-index: 2;
+					position: relative;
+				}
+
+			button.primary {
+				background: rgb(16,108,200);
+			}
+
+			button:hover, button:focus {
+				/*background: rgba(255, 255, 255, .2);*/
+				/*background: #445599;*/
+				color: #fff;
+			}
+			button:active {
+				/*transform: translateY(-3px);*/
+				box-shadow: 0 4px 8px 0 rgba(0,0,0,.65);
+			}
+
+			button.normal {
+				background: transparent;
+				box-shadow: none;
+				color: #000;
+			}
+
+			button.normal[disabled="disabled"] {
+				color: rgba(0, 0, 0, .3) !important;
+				background: transparent !important;
+			}
+
+			button.normal:hover,
+			button.normal:focus {
+				color: inherit;
+				background: rgba(0, 0, 0, .1);
+			}
+
+			button.normal:active {
+				background: rgba(0,0,0,.2);
+			}
+
+			button.normal.primary {
+				color: rgb(16,108,200);
+			}
+
+			button.normal.warn {
+				color: rgb(244,67,54);
+			}
+
+			button.normal:before {
+				background: rgba(0, 0, 0, .1);
+			}
+
+
+			button:before {
+				position: absolute;
+				display: block;
+				height: 200px;
+				width: 200px;
+				left: 50%;
+				top: 50%;
+				margin-top: -100px;
+				margin-left: -100px;
+				background: rgba(255, 255, 255, .1);
+				content: " ";
+				z-index: 0;
+				-webkit-transform: scale(0);
+				transform: scale(0);
+				-webkit-transition: opacity 400ms 0ms, -webkit-transform 0ms 400ms;
+				transition: opacity 400ms 0ms, transform 0ms 400ms;
+				border-radius: 50%;
+				opacity: 0;
+			}
+
+
+			button.active:before {
+				opacity: 1;
+				-webkit-transform: scale(1);
+				transform: scale(1);
+				-webkit-transition: -webkit-transform 1000ms, opacity 50ms;
+				transition: transform 1000ms, opacity 100ms;
+			}
+
+
+
+
+

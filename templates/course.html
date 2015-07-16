@@ -1,0 +1,180 @@
+{% extends "base_template.html" %}
+{% block content %}
+		<!-- <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid"> -->
+	<!-- <div class="mdl-layout__content"> -->
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col">
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Course</h4>
+
+					<form method="Post" style="display:block;clear:both;">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+							<input class="mdl-textfield__input" type="text" pattern="[A-Z]{4}[1-4]{1}[0-9]{2}" id="course_id" name="course_id">
+							<label class="mdl-textfield__label" for="course_id">Course ID</label>
+							<span class="mdl-textfield__error">Invalid Course Format</span>
+						</div>
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="">
+							<input class="mdl-textfield__input" type="text" id="course_name" name="course_name">
+							<label class="mdl-textfield__label" for="course_name">Course Name</label>
+							<!-- <span class="mdl-textfield__error">Invalid Course Format</span> -->
+						</div>
+						<div>
+							<h5 style="clear:both;padding-top:30px;">Class Distribution</h5>
+						</div>
+						<div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								<input class="mdl-textfield__input" type="text" pattern="[1-9]{1}[0-9]{0,1}" id="class_per_week" name="class_per_week">
+								<label class="mdl-textfield__label" for="class_per_week">Class per week</label>
+								<span class="mdl-textfield__error">Invalid total class</span>
+							</div>
+						</div>
+
+						<div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="class_distribution_1" name="class_distribution_1">
+								<label class="mdl-textfield__label" for="class_distribution_1">1 Hour</label>
+								<span class="mdl-textfield__error">That's not a number</span>
+							</div>
+
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="class_distribution_2" name="class_distribution_2">
+								<label class="mdl-textfield__label" for="class_distribution_2">2 Hours</label>
+								<span class="mdl-textfield__error">That's not a number</span>
+							</div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="class_distribution_3" name="class_distribution_3">
+								<label class="mdl-textfield__label" for="class_distribution_3">3 Hours</label>
+								<span class="mdl-textfield__error">That's not a number</span>
+							</div>
+
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								<input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="class_distribution_4" name="class_distribution_4">
+								<label class="mdl-textfield__label" for="class_distribution_4">4 Hours</label>
+								<span class="mdl-textfield__error">That's not a number number!</span>
+							</div>
+						</div>
+
+						<label class="clear">
+							<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Submit</button>
+						</label>
+					</form>
+				</div>
+			</div>
+		</section>
+		
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
+				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
+					<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable" style="width:100%;">
+					  <thead>
+					    <tr>
+					      <th class="mdl-data-table__cell--non-numeric">Course ID</th>
+					      <th class="mdl-data-table__cell--non-numeric">Course Name</th>
+					      <th>Class per week</th>
+					      <th class="mdl-data-table__cell--non-numeric">Class Distribution</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+						
+						{% for course in courses %}<tr>
+								<td class="mdl-data-table__cell--non-numeric">{{course.key().name()}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{course.course_name}}</td>
+								<td>{{course.class_per_week}}</td>
+								<td class="mdl-data-table__cell--non-numeric class_distribution">{{course.class_distribution}}</td>						</tr>
+						{% endfor %}
+					  </tbody>
+					</table>
+				</div>	
+			</section>
+
+{% endblock %}
+
+{% block extraScript %}
+	<script type="text/javascript">
+	$('form').submit(function(x) {
+		x.preventDefault();
+		// console.log($(this).valid());
+		return false;
+		var t = $(this);
+		var course_id = $('input[name=course_id]', t).val()
+		var course_name = $('input[name=course_name]', t).val();
+		var class_per_week = $('input[name=class_per_week]', t).val();
+		var class_distribution_1 = $('input[name=class_distribution_1]', t).val() || 0;
+		var class_distribution_2 = $('input[name=class_distribution_2]', t).val() || 0;
+		var class_distribution_3 = $('input[name=class_distribution_3]', t).val() || 0;
+		var class_distribution_4 = $('input[name=class_distribution_4]', t).val() || 0;
+
+		if (course_id == "") {
+			pop.alert("Error", "Please enter Course ID", function() {
+				$('input[name=course_id]').focus();
+			}, "warn");
+			return false;
+		}
+		if (course_name == "") {
+			pop.alert("Error", "Please enter Course Name", function() {
+				$('input[name=course_name]').focus();
+			}, "warn");
+			return false;
+		}
+		if (class_per_week == "") {
+			pop.alert("Error", "Please enter Class per week", function() {
+				$('input[name=class_per_week]').focus();
+			}, "warn");
+			return false;
+		}
+		if (parseInt(class_per_week) != parseInt(class_distribution_1) + parseInt(class_distribution_2) * 2 + parseInt(class_distribution_3) * 3 + parseInt(class_distribution_4) * 4) {
+			pop.alert("Error", "Total class per week and Sum of class distribution did not match.", function() {
+				$('input[name=class_per_week]').focus();
+			}, "warn");
+			return false;
+		}
+		$.ajax({
+			type: "POST",
+			url: '/course',
+			data: {
+				course_id: course_id,
+				course_name: course_name,
+				class_per_week: class_per_week,
+				class_distribution: JSON.stringify(
+					{1: class_distribution_1,
+					2: class_distribution_2,
+					3: class_distribution_3,
+					4: class_distribution_4}
+				)
+			},
+			success: function(message) {
+				if (message == "success") {
+					location.reload();
+				}
+			}
+		});
+		// var t = $(this);
+		// console.log(t.serialize());
+		return false;
+	});
+
+	$(document).ready(function() {
+		$('td.class_distribution').each(function() {
+			var t = $(this);
+			var total = parseInt(t.prev().text());
+			var text = JSON.parse(t.text());
+			t.empty();
+			var r = $('<div/>', {
+				style: "width: 100%; position:relative;border-left:0px solid #000;"
+			});
+			t.append(r);
+			for (var distribution in text) {
+				for (var i = 0; i < text[distribution]; i++) {
+					r.append($('<div/>', {
+						text: distribution,
+						class: 'class-distribution-' + distribution
+					}).css({
+						width: (distribution * 30),
+					}));
+				}
+			}
+		});
+	});
+	</script>
+{% endblock %}
+{% block currentPage %}course{% endblock %}

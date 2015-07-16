@@ -1,0 +1,69 @@
+{% extends "base_template.html" %}
+{% block content %}
+		<div class="p10">
+			<h1>Department</h1>
+			<form method="Post">
+				<label>
+					<strong>Department Name</strong>
+					<input name="department_name" style="">
+				</label>
+				<label class="clear">
+					<button type="submit" class="primary"><span>Submit</span></button>
+				</label>
+			</form>
+		</div>
+		<div class="listDisplay p10">
+			<div style="padding:10px 0;">
+				<button class="normal warn" style="margin-right:10px;" disabled="disabled">Delete</button>
+				<button class="normal">Edit</button>
+			</div>
+			<table>
+				<tr>
+					<th></th>
+					<th>Department Name</th>
+				</tr>
+				{% for department in departments %}
+				<tr>
+				<td>
+					<input type="checkbox">
+				</td>
+					<td>{{department.department_name}}</td>
+				</tr>
+				{% endfor%}
+			</table>
+		</div>
+{% endblock %}
+
+{% block extraScript %}
+	<script type="text/javascript">
+	$('form').submit(function() {
+		var t = $(this);
+		var department_name = $('input[name=department_name]', t).val();
+
+		if (department_name == "") {
+			pop.alert("Error", "Please enter Department Name", function() {
+				$('input[name=course_name]').focus();
+			}, "warn");
+			return false;
+		}
+
+		$.ajax({
+			type: "POST",
+			url: '/department',
+			data: {
+				department_name: department_name,
+			},
+			success: function(message) {
+				if (message == "success") {
+					pop.alert("Success", "Data added successfully", function() {
+						location.reload();
+					}, "normal");
+				}
+			}
+		});
+		return false;
+	});
+
+	</script>
+{% endblock %}
+{% block currentPage %}department{% endblock %}
