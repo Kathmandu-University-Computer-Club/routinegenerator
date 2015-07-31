@@ -1,50 +1,105 @@
 {% extends "base_template.html" %}
 {% block content %}
-	<h1>Class Course</h1>
-	<form method="post">
-		<div>
-			<!-- Faculty: <input name = "faculty"> -->
-			Faculty: 
-			<select name="faculty">
-				{% for faculty in faculties %}
-					<option value="{{faculty.key().name()}}">{{faculty.key().name()}} {{faculty.faculty_name}}</option>
-				{% endfor %}	
-			</select>
-		</div>
-		<div>
-			Year:
-			<select name="year">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-			</select>
-		</div>
-		<div>
-			Semester:
-			<select name="semester">
-				<option value="1">I</option>
-				<option value="2">II</option>
-			</select>
-		</div>
-		<div>
-			Course (separated by comma): <input name = "course">
-			<!-- Course: -->
-			<br>
-			Choose from:
-			<br> 
-			{% for course in courses %}
-				{{course.key().name()}} {{course.course_name}}<br>
-			{% endfor %}
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col">
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Class Course</h4>
 
+					<form method="Post" style="display:block;clear:both;">
+						<div style="width:150px;">
+							Faculty: 
+							<select name="faculty">
+								{% for faculty in faculties %}
+									<option value="{{faculty.key().name()}}">{{faculty.key().name()}} {{faculty.faculty_name}}</option>
+								{% endfor %}	
+							</select>
+						</div>
+						<div style="padding: 20px 0;">
+							<div style="float:left; margin-right:20px;">
+								<div>Year:</div>
+								<select name="year">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+								</select>
+							</div>
+							<div style="float:left;">
+								<div>Semester:</div>
+								<select name="semester">
+									<option value="1">I</option>
+									<option value="2">II</option>
+								</select>
+							</div>
+						</div>
+						<div style="clear:both; padding: 20px 0;">
+							<div data-course="1" style="clear:both;">
+								<select name="course_1" class="course_listing">
+									{% for course in courses %}
+										<option value="{{course.key().name()}}">{{course.key().name()}} {{course.course_name}}</option>
+									{% endfor %}
+								</select>
+								<select name="teacher_1" class="teacher_listing">
+									{% for teacher in teachers %}
+										<option value="{{teacher.key().id()}}">{{teacher.teacher_name}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<button id="addCourse" type="button">Add</button>
+						</div>
 
-			{% for teacher in teachers %}
-				{{teacher.key().id()}} {{teacher.teacher_name}}<br>
-			{% endfor %}
+						<label class="clear">
+							<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Submit</button>
+						</label>
+					</form>
+				</div>
+			</div>
+		</section>
+		
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
+				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
+					<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable" style="width:100%;">
+					  <thead>
+					    <tr>
+					      <th class="mdl-data-table__cell--non-numeric">ID</th>
+					      <th class="mdl-data-table__cell--non-numeric">Faculty</th>
+					      <th class="mdl-data-table__cell--non-numeric">Year</th>
+					      <th class="mdl-data-table__cell--non-numeric">Semester</th>
+					      <th class="mdl-data-table__cell--non-numeric">Courses</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+						
+						{% for classcourse in classcourses %}
+							<tr>
+								<td class="mdl-data-table__cell--non-numeric">{{classcourse.key().id()}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{classcourse.faculty}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{classcourse.year}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{classcourse.semester}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{classcourse.course}}</td>
+							</tr>
+						{% endfor %}
+					  </tbody>
+					</table>
+				</div>	
+			</section>
 
-		</div>
-		<div>
-			<input type="submit">
-		</div>
-	</form>
+{% endblock %}
+
+{% block currentPage %}faculty{% endblock %}
+
+{% block extraScript %}
+	<script type="text/javascript">
+	$('#addCourse').click(function() {
+		var prev = $(this).prev();
+		var next = prev.clone();
+		var v = parseInt(next.attr('data-course')) + 1;
+		next.attr('data-course', v);
+		$('.course_listing', next).attr('name', 'course_' + v);
+		$('.teacher_listing', next).attr('name', 'teacher_' + v);
+		$(this).before(next);
+		return false;
+	});
+	</script>
 {% endblock %}

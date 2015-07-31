@@ -6,6 +6,7 @@ class DepartmentHandler(BaseHandler):
 	def get(self):
 		departments = db.GqlQuery("SELECT * from Department ORDER BY department_name")
 		self.render("department.html",{'departments':departments})
+
 	def post(self):
 		department_name = self.request.get('department_name')
 		department_id = int(self.request.get('department_id') or 0)

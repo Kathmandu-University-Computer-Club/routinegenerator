@@ -5,12 +5,21 @@ from google.appengine.ext import db
 
 class ClassCourseHandler(BaseHandler):
 	def get(self):
-		classcourse = db.GqlQuery("SELECT * FROM ClassCourse")
+		classcourses = db.GqlQuery("SELECT * FROM ClassCourse")
 		courses = db.GqlQuery("SELECT * FROM Course")
 		faculties = db.GqlQuery("SELECT * FROM Faculty")
 		teachers = db.GqlQuery("SELECT * FROM Teacher")
+
+		# r = []
+		# for classcourse in classcourses:
+		# 	r.append({
+		# 		'id': classcourse.key().id,
+		# 		'faculty_id':classcourse.faculty,
+		# 		'year': classcourse.year,
+		# 		'semester': classcourse.semester,
+		# 	})
 		self.render("classcourse.html", {
-			'classcourse':classcourse,
+			'classcourses':classcourses,
 			'courses': courses,
 			'faculties': faculties,
 			'teachers': teachers
@@ -21,14 +30,20 @@ class ClassCourseHandler(BaseHandler):
 		year = int(self.request.get('year'))
 		semester = int(self.request.get('semester'))
 		# course = self.request.get('course').replace(', ', ',').split(',')
-		courses = str(self.request.get('courses').replace(" ", "").split(","))
+		cnt = 1
+		r = {}
+		while self.request.get('course_' + str(cnt)) != "":
+			r[self.request.get('course_' + str(cnt))] = int(self.request.get('teacher_' + str(cnt)))
+			cnt += 1
+		# courses = str(self.request.get('courses').replace(" ", "").split(","))
+		courses = r
 		# self.response.write("ok")
 		# return
 		classcourse = ClassCourse(
 			faculty = faculty,
 			year = year,
 			semester = semester,
-			course = courses
+			course = str(courses)
 			)
 		classcourse.put()
 		self.response.write("Sucessfully")

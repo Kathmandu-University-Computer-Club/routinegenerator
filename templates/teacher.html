@@ -1,35 +1,70 @@
 {% extends "base_template.html" %}
 {% block content %}
-	<h1>Teacher</h1>
-	<form method="post">
-		<div>Teacher Name:<input name="teacher_name"></div>
-		<div>Department:
-			<select name="department">
-				{% for department in departments %}
-				<option value="{{department.key().id()}}">{{department.department_name}}</option>
-				{% endfor %}
-			</select>
-		</div>
-		<div>
-			Teaching Time:
-			<input name="teaching_time">
-			<div style="color:#777">
-				{'sunday': [1,2,3,5,6], 'tuesday':[7]"}
-			</div>
-		</div>
-<!-- 		<div>
-			Class Courses:
-			<input name="class_courses">
-			<div style="color:#777">
-				[classcourseid_int, classcourse_str]
-			</div>
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col">
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Teacher</h4>
 
-			<div>
-				{% for classcourse in class_courses %}
-				<div>{{classcourse.key().id()}} {{classcourse.faculty}} {{classcourse.year}} {{classcourse.semester}} {{classcourse.course}}</div>
-				{% endfor %}
+					<form method="Post" style="display:block;clear:both;">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="">
+							<input class="mdl-textfield__input" type="text" id="teacher_name" name="teacher_name">
+							<label class="mdl-textfield__label" for="teacher_name">Teacher Name</label>
+							<!-- <span class="mdl-textfield__error">Invalid Course Format</span> -->
+						</div>
+						<div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								Department
+								<select class="mdl-selectfield mdl-js-selectfield" id="department_name" name="department">
+									{% for department in departments %}
+									<option value="{{department.key().id()}}">{{department.department_name}}</option>
+									{% endfor %}
+									<label class="" for="department_name">Department Name</label>
+								</select>
+							</div>
+						</div>
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:500px;">
+							<input class="mdl-textfield__input" type="text" id="teaching_time" name="teaching_time">
+							<label class="mdl-textfield__label" for="teaching_time">Teaching Time ({'sunday': [1,2,3,5,6], 'tuesday':[7]"})</label>
+							<!-- <span class="mdl-textfield__error">Invalid Course Format</span> -->
+						</div>
+						<div>
+						<label class="clear">
+							<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Submit</button>
+						</label>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div> -->
-		<div><input type="submit"></div>
-	</form>
+		</section>
+		
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
+				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
+					<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable" style="width:100%;">
+					  <thead>
+					    <tr>
+					      <th class="mdl-data-table__cell--non-numeric">Teacher ID</th>
+					      <th class="mdl-data-table__cell--non-numeric">Teacher Name</th>
+					      <th class="mdl-data-table__cell--non-numeric">Department</th>
+					      <th class="mdl-data-table__cell--non-numeric" style="display:none;">Teaching Time</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+						{% for teacher in teachers %}
+							<tr>
+								<td class="mdl-data-table__cell--non-numeric">{{teacher.id}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{teacher.teacher_name}}</td>
+								<td class="mdl-data-table__cell--non-numeric" data-department_id="{{teacher.department_id}}">{{teacher.department_name}}</td>
+								<td class="mdl-data-table__cell--non-numeric" style="display:none">{{teacher.teaching_time}}</td>
+							</tr>
+						{% endfor %}
+					  </tbody>
+					</table>
+				</div>	
+			</section>
+
 {% endblock %}
+
+{% block currentPage %}teacher{% endblock %}
+
+
