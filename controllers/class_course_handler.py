@@ -19,14 +19,16 @@ class ClassCourseHandler(BaseHandler):
 	def post(self):
 		faculty= self.request.get('faculty')
 		year = int(self.request.get('year'))
+		semester = int(self.request.get('semester'))
 		# course = self.request.get('course').replace(', ', ',').split(',')
-		course = self.request.get('course')
+		courses = str(self.request.get('courses').replace(" ", "").split(","))
 		# self.response.write("ok")
 		# return
 		classcourse = ClassCourse(
 			faculty = faculty,
 			year = year,
-			course = course
+			semester = semester,
+			course = courses
 			)
 		classcourse.put()
 		self.response.write("Sucessfully")
