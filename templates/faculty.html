@@ -1,62 +1,69 @@
 {% extends "base_template.html" %}
 {% block content %}
-		<div class="p10">
-			<h1>Faculty</h1>
-			<form method="Post">
-				<label>
-					<strong>Faculty ID (e.g. CE)</strong>
-					<input name="faculty_id" style="">
-				</label>
-				<label>
-					<strong>Faculty</strong>
-					<input name="faculty_name" style="">
-				</label>
-				<label class="clear">
-					<select name="department">
-						{% for department in departments %}
-						<option value="{{department.key().id()}}">{{department.department_name}}</option>
-						{% endfor %}
-					</select>
-				</label>
-				<label class="clear">
-					<button type="submit" class="primary"><span>Submit</span></button>
-				</label>
-			</form>
-		</div>
-		<div class="listDisplay p10">
-			<div style="padding:10px 0;">
-				<button class="normal warn" style="margin-right:10px;" disabled="disabled">Delete</button>
-				<button class="normal">Edit</button>
+		<!-- <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid"> -->
+	<!-- <div class="mdl-layout__content"> -->
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col">
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Faculty</h4>
+
+					<form method="Post" style="display:block;clear:both;">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+							<input class="mdl-textfield__input" type="text" pattern="[A-Z]{2}" id="faculty_id" name="faculty_id">
+							<label class="mdl-textfield__label" for="faculty_id">Faculty ID (eg CE)</label>
+							<span class="mdl-textfield__error">Invalid Faculty Format</span>
+						</div>
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="">
+							<input class="mdl-textfield__input" type="text" id="faculty_name" name="faculty_name">
+							<label class="mdl-textfield__label" for="faculty_name">Faculty Name</label>
+							<!-- <span class="mdl-textfield__error">Invalid Course Format</span> -->
+						</div>
+						<div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="width:150px;">
+								Department
+								<select class="mdl-selectfield mdl-js-selectfield" id="department_name" name="department">
+									{% for department in departments %}
+									<option value="{{department.key().id()}}">{{department.department_name}}</option>
+									{% endfor %}
+									<label class="" for="department_name">Department Name</label>
+								</select>
+							</div>
+						</div>
+
+						<label class="clear">
+							<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Submit</button>
+						</label>
+					</form>
+				</div>
 			</div>
-			<table>
-				<tr>
-					<th></th>
-					<th>ID</th>
-					<th>Faculty Name</th>
-					<th>Department</th>
-				</tr>
-				{% for faculty in faculties %}
-				<tr>
-				<td>
-					<input type="checkbox">
-				</td>
-					<td>{{faculty.key().name()}}</td>
-					<td>{{faculty.faculty_name}}</td>
-					{% for department in departments %}
-						{% if department.key().id() == faculty.department %}
-							<td>{{department.department_name}}</td>
-						{% endif %}
-					{% endfor %}
-				</tr>
-				{% endfor%}
-			</table>
-		</div>
+		</section>
+		
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
+				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
+					<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable" style="width:100%;">
+					  <thead>
+					    <tr>
+					      <th class="mdl-data-table__cell--non-numeric">Faculty ID</th>
+					      <th class="mdl-data-table__cell--non-numeric">Faculty Name</th>
+					      <th class="mdl-data-table__cell--non-numeric">Department</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+						
+						{% for faculty in faculties %}
+							<tr>
+								<td class="mdl-data-table__cell--non-numeric">{{faculty.id}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{faculty.faculty_name}}</td>
+								<td class="mdl-data-table__cell--non-numeric" data-department_id="{{faculty.department_id}}">{{faculty.department_name}}</td>
+							</tr>
+						{% endfor %}
+					  </tbody>
+					</table>
+				</div>	
+			</section>
+
 {% endblock %}
 
-{% block extraScript %}
-	
-{% endblock %}
 {% block currentPage %}faculty{% endblock %}
-
-
 

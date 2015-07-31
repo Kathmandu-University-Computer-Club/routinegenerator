@@ -1,69 +1,48 @@
 {% extends "base_template.html" %}
 {% block content %}
-		<div class="p10">
-			<h1>Department</h1>
-			<form method="Post">
-				<label>
-					<strong>Department Name</strong>
-					<input name="department_name" style="">
-				</label>
-				<label class="clear">
-					<button type="submit" class="primary"><span>Submit</span></button>
-				</label>
-			</form>
-		</div>
-		<div class="listDisplay p10">
-			<div style="padding:10px 0;">
-				<button class="normal warn" style="margin-right:10px;" disabled="disabled">Delete</button>
-				<button class="normal">Edit</button>
+		<!-- <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid"> -->
+	<!-- <div class="mdl-layout__content"> -->
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col">
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Department</h4>
+
+					<form method="Post" style="display:block;clear:both;">
+						<input name="department_id" style="display:block;">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="">
+							<input class="mdl-textfield__input" type="text" id="department_name" name="department_name">
+							<label class="mdl-textfield__label" for="department_name">Department Name</label>
+						</div>
+
+						<label class="clear">
+							<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Submit</button>
+						</label>
+					</form>
+				</div>
 			</div>
-			<table>
-				<tr>
-					<th></th>
-					<th>Department Name</th>
-				</tr>
-				{% for department in departments %}
-				<tr>
-				<td>
-					<input type="checkbox">
-				</td>
-					<td>{{department.department_name}}</td>
-				</tr>
-				{% endfor%}
-			</table>
-		</div>
+		</section>
+		
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
+				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
+					<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable" style="width:100%;">
+					  <thead>
+					    <tr>
+					      <th class="mdl-data-table__cell--non-numeric">ID (Auto Generated)</th>
+					      <th class="mdl-data-table__cell--non-numeric">Department Name</th>
+					  </thead>
+					  <tbody>
+						
+						{% for department in departments %}
+							<tr>
+								<td class="mdl-data-table__cell--non-numeric">{{department.key().id()}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{department.department_name}}</td>
+							</tr>
+						{% endfor %}
+					  </tbody>
+					</table>
+				</div>	
+			</section>
+
 {% endblock %}
 
-{% block extraScript %}
-	<script type="text/javascript">
-	$('form').submit(function() {
-		var t = $(this);
-		var department_name = $('input[name=department_name]', t).val();
-
-		if (department_name == "") {
-			pop.alert("Error", "Please enter Department Name", function() {
-				$('input[name=course_name]').focus();
-			}, "warn");
-			return false;
-		}
-
-		$.ajax({
-			type: "POST",
-			url: '/department',
-			data: {
-				department_name: department_name,
-			},
-			success: function(message) {
-				if (message == "success") {
-					pop.alert("Success", "Data added successfully", function() {
-						location.reload();
-					}, "normal");
-				}
-			}
-		});
-		return false;
-	});
-
-	</script>
-{% endblock %}
-{% block currentPage %}department{% endblock %}

@@ -76,11 +76,13 @@
 					  </thead>
 					  <tbody>
 						
-						{% for course in courses %}<tr>
+						{% for course in courses %}
+							<tr>
 								<td class="mdl-data-table__cell--non-numeric">{{course.key().name()}}</td>
 								<td class="mdl-data-table__cell--non-numeric">{{course.course_name}}</td>
 								<td>{{course.class_per_week}}</td>
-								<td class="mdl-data-table__cell--non-numeric class_distribution">{{course.class_distribution}}</td>						</tr>
+								<td class="mdl-data-table__cell--non-numeric class_distribution">{{course.class_distribution}}</td>
+							</tr>
 						{% endfor %}
 					  </tbody>
 					</table>
@@ -90,91 +92,92 @@
 {% endblock %}
 
 {% block extraScript %}
-	<script type="text/javascript">
-	$('form').submit(function(x) {
-		x.preventDefault();
-		// console.log($(this).valid());
-		return false;
-		var t = $(this);
-		var course_id = $('input[name=course_id]', t).val()
-		var course_name = $('input[name=course_name]', t).val();
-		var class_per_week = $('input[name=class_per_week]', t).val();
-		var class_distribution_1 = $('input[name=class_distribution_1]', t).val() || 0;
-		var class_distribution_2 = $('input[name=class_distribution_2]', t).val() || 0;
-		var class_distribution_3 = $('input[name=class_distribution_3]', t).val() || 0;
-		var class_distribution_4 = $('input[name=class_distribution_4]', t).val() || 0;
+	// <script type="text/javascript">
+	// $('form').submit(function(x) {
+	// 	return true;
+	// 	x.preventDefault();
+	// 	// console.log($(this).valid());
+	// 	return false;
+	// 	var t = $(this);
+	// 	var course_id = $('input[name=course_id]', t).val()
+	// 	var course_name = $('input[name=course_name]', t).val();
+	// 	var class_per_week = $('input[name=class_per_week]', t).val();
+	// 	var class_distribution_1 = $('input[name=class_distribution_1]', t).val() || 0;
+	// 	var class_distribution_2 = $('input[name=class_distribution_2]', t).val() || 0;
+	// 	var class_distribution_3 = $('input[name=class_distribution_3]', t).val() || 0;
+	// 	var class_distribution_4 = $('input[name=class_distribution_4]', t).val() || 0;
 
-		if (course_id == "") {
-			pop.alert("Error", "Please enter Course ID", function() {
-				$('input[name=course_id]').focus();
-			}, "warn");
-			return false;
-		}
-		if (course_name == "") {
-			pop.alert("Error", "Please enter Course Name", function() {
-				$('input[name=course_name]').focus();
-			}, "warn");
-			return false;
-		}
-		if (class_per_week == "") {
-			pop.alert("Error", "Please enter Class per week", function() {
-				$('input[name=class_per_week]').focus();
-			}, "warn");
-			return false;
-		}
-		if (parseInt(class_per_week) != parseInt(class_distribution_1) + parseInt(class_distribution_2) * 2 + parseInt(class_distribution_3) * 3 + parseInt(class_distribution_4) * 4) {
-			pop.alert("Error", "Total class per week and Sum of class distribution did not match.", function() {
-				$('input[name=class_per_week]').focus();
-			}, "warn");
-			return false;
-		}
-		$.ajax({
-			type: "POST",
-			url: '/course',
-			data: {
-				course_id: course_id,
-				course_name: course_name,
-				class_per_week: class_per_week,
-				class_distribution: JSON.stringify(
-					{1: class_distribution_1,
-					2: class_distribution_2,
-					3: class_distribution_3,
-					4: class_distribution_4}
-				)
-			},
-			success: function(message) {
-				if (message == "success") {
-					location.reload();
-				}
-			}
-		});
-		// var t = $(this);
-		// console.log(t.serialize());
-		return false;
-	});
+	// 	if (course_id == "") {
+	// 		pop.alert("Error", "Please enter Course ID", function() {
+	// 			$('input[name=course_id]').focus();
+	// 		}, "warn");
+	// 		return false;
+	// 	}
+	// 	if (course_name == "") {
+	// 		pop.alert("Error", "Please enter Course Name", function() {
+	// 			$('input[name=course_name]').focus();
+	// 		}, "warn");
+	// 		return false;
+	// 	}
+	// 	if (class_per_week == "") {
+	// 		pop.alert("Error", "Please enter Class per week", function() {
+	// 			$('input[name=class_per_week]').focus();
+	// 		}, "warn");
+	// 		return false;
+	// 	}
+	// 	if (parseInt(class_per_week) != parseInt(class_distribution_1) + parseInt(class_distribution_2) * 2 + parseInt(class_distribution_3) * 3 + parseInt(class_distribution_4) * 4) {
+	// 		pop.alert("Error", "Total class per week and Sum of class distribution did not match.", function() {
+	// 			$('input[name=class_per_week]').focus();
+	// 		}, "warn");
+	// 		return false;
+	// 	}
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: '/course',
+	// 		data: {
+	// 			course_id: course_id,
+	// 			course_name: course_name,
+	// 			class_per_week: class_per_week,
+	// 			class_distribution: JSON.stringify(
+	// 				{1: class_distribution_1,
+	// 				2: class_distribution_2,
+	// 				3: class_distribution_3,
+	// 				4: class_distribution_4}
+	// 			)
+	// 		},
+	// 		success: function(message) {
+	// 			if (message == "success") {
+	// 				location.reload();
+	// 			}
+	// 		}
+	// 	});
+	// 	// var t = $(this);
+	// 	// console.log(t.serialize());
+	// 	return false;
+	// });
 
-	$(document).ready(function() {
-		$('td.class_distribution').each(function() {
-			var t = $(this);
-			var total = parseInt(t.prev().text());
-			var text = JSON.parse(t.text());
-			t.empty();
-			var r = $('<div/>', {
-				style: "width: 100%; position:relative;border-left:0px solid #000;"
-			});
-			t.append(r);
-			for (var distribution in text) {
-				for (var i = 0; i < text[distribution]; i++) {
-					r.append($('<div/>', {
-						text: distribution,
-						class: 'class-distribution-' + distribution
-					}).css({
-						width: (distribution * 30),
-					}));
-				}
-			}
-		});
-	});
-	</script>
+	// $(document).ready(function() {
+	// 	$('td.class_distribution').each(function() {
+	// 		var t = $(this);
+	// 		var total = parseInt(t.prev().text());
+	// 		var text = JSON.parse(t.text());
+	// 		t.empty();
+	// 		var r = $('<div/>', {
+	// 			style: "width: 100%; position:relative;border-left:0px solid #000;"
+	// 		});
+	// 		t.append(r);
+	// 		for (var distribution in text) {
+	// 			for (var i = 0; i < text[distribution]; i++) {
+	// 				r.append($('<div/>', {
+	// 					text: distribution,
+	// 					class: 'class-distribution-' + distribution
+	// 				}).css({
+	// 					width: (distribution * 30),
+	// 				}));
+	// 			}
+	// 		}
+	// 	});
+	// });
+	// </script>
 {% endblock %}
 {% block currentPage %}course{% endblock %}

@@ -1,6 +1,7 @@
 from controllers.base_handler import *
-from models.Faculty import Faculty
 from google.appengine.ext import db
+from models.Faculty import Faculty
+from models.Department import Department
 
 class FacultyHandler(BaseHandler):
 	def get(self):
@@ -14,7 +15,16 @@ class FacultyHandler(BaseHandler):
 		# 			# faculty.department = department.department_name
 		# 			# faculty['department'] = department.department_name
 		# 			break
-		self.render("faculty.html",{'faculties':faculties, 'departments':departments})
+		f = []
+		for faculty in faculties:
+			f.append({
+				'id': faculty.key().name(),
+				'faculty_name': faculty.faculty_name,
+				'department_id': faculty.department,
+				'department_name': Department.get_by_id(faculty.department).department_name
+			})
+		self.render("faculty.html",{'faculties':f, 'departments':departments})
+		# self.render("faculty.html",{'faculties':faculties, 'departments':departments})
 
 	def post(self):
 		faculty_id= self.request.get('faculty_id')
@@ -25,7 +35,7 @@ class FacultyHandler(BaseHandler):
 			key_name = faculty_id,
 			faculty_name = faculty_name,
 			department = department
-			)
+		)
 
 		faculty.put()
 		self.response.write("Sucessfully")

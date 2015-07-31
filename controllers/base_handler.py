@@ -1,7 +1,7 @@
 import webapp2
 import jinja2
 import os
-
+import time
 head, tail   = os.path.split(os.path.dirname(__file__))
 template_dir = os.path.join(head, "templates")
 jinja_environment = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = False)
@@ -14,7 +14,9 @@ class BaseHandler(webapp2.RequestHandler):
 	def render(self, template, vals={}):
 		template = jinja_environment.get_template("%s" % template)
 		self.response.out.write(template.render(vals))
-
+	def redirectto(self, url):
+		time.sleep(1)
+		self.redirect(url)
 
 
 
