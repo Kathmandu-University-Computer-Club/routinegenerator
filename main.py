@@ -7,6 +7,7 @@ from controllers.class_course_handler import ClassCourseHandler
 from controllers.faculty_handler import FacultyHandler
 from controllers.department_handler import DepartmentHandler
 from controllers.teacher_handler import TeacherHandler
+from controllers.generate import GenerateHandler
 import webapp2
 
 
@@ -17,5 +18,6 @@ app = webapp2.WSGIApplication([
 	('/classcourse',ClassCourseHandler),
 	('/faculty',FacultyHandler),
 	('/department',DepartmentHandler),
-	('/teacher', TeacherHandler)
+	('/teacher', TeacherHandler),
+	('/generate', GenerateHandler)
 ], debug=True)
