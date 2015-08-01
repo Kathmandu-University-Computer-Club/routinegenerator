@@ -10,17 +10,16 @@ import copy
 
 def findTiming(day, duration):
 	# [1,2,4,5,6] 3
+	
+
 	if not day:
 		return []
-	r = {"duration": duration,
-		"timing": []
-	}
 	r = []
 	for i in range(0, len(day)):
 		d = duration
 		k = 0
 		for j in range(i, len(day)):
-			if i + k == j:
+			if day[i] + k == day[j]:
 				# days are continuous 
 				d -= 1
 				if d == 0:
@@ -28,6 +27,25 @@ def findTiming(day, duration):
 					r.append([day[i], day[j]])
 			k += 1
 	return r
+
+	# if not day:
+	# 	return []
+	# r = {"duration": duration,
+	# 	"timing": []
+	# }
+	# r = []
+	# for i in range(0, len(day)):
+	# 	d = duration
+	# 	k = 0
+	# 	for j in range(i, len(day)):
+	# 		if i + k == j:
+	# 			# days are continuous 
+	# 			d -= 1
+	# 			if d == 0:
+	# 				# r['timing'].append([day[i], day[j]])
+	# 				r.append([day[i], day[j]])
+	# 		k += 1
+	# return r
 
 def findTeachingTime(subject, available_teaching_time, total_classes, class_duration, routine, possibilities):
 	# print subject, available_teaching_time, total_classes, class_duration, routine
@@ -70,12 +88,52 @@ def findTeachingTime(subject, available_teaching_time, total_classes, class_dura
 
 
 
+def overlaps(a, b):
+	if a[1] < b[0] or a[0] > b[1]:
+		return False
+	return True
 
 
+def get_random_day_for_duration(possibilities, duration, routine):
+	# remove overlapping classes from possibilities
 
-def get_random_day_for_duration(possibilities, duration):
+	for day in routine:
+
+		for class_ in routine[day]:
+			# if day in possibilities
+				for class_duration in possibilities[day]:
+					toremove = []
+					for x in possibilities[day][class_duration]:
+						if overlaps(x, class_['timing']):
+							print x, class_['timing']
+							toremove.append(x)
+					for x in toremove:
+						possibilities[day][class_duration].remove(x)
+			# print day, class_
+
+	# for k_day in possibilities:
+	# 	x = possibilities[k_day] # "1": [[1, 1 ], [3, 3 ], [4, 4 ] ], "2" :[..]
+	# 	for y in x:
+	# 			z = x[y] #[[1, 1 ], [3, 3 ], [4, 4 ] ]
+	# 		# for day in routine:
+	# 			# for class_ in routine[day]:
+	# 			print k_day, z, routine[k_day]
+	# 			# for class_ in routine[k_day]:
+	# 			# 	v = class_['timing']
+	# 			# 	for u in z:
+	# 			# 		if not (u[1] < v[0] or u[0] > v[1]): 
+	# 			# 			# z.remove(class_['timing'])
+	# 			# 			# print u, v, k_day
+	# 			# 			z.remove(u)
+
+	# 						# pass
+
+	# 				# if class_['timing'] in z:
+	# 					# z.remove(class_['timing'])
+
 	keys = [key for key in possibilities if possibilities[key] != {} and duration in possibilities[key]]
-	# print keys
+
+  # print keys
 	# print possibilities
 	# return "sunday"
 	r = keys[random.randint(0, len(keys) - 1)]
@@ -156,7 +214,9 @@ class GenerateHandler(BaseHandler):
 
 		total_tries = 0
 		original_classes = copy.deepcopy(classes)
-		while total_tries < 1:
+		inner_fail = True
+		while total_tries < 5 and inner_fail == True:
+			inner_fail = False
 			total_tries += 1
 			classes = copy.deepcopy(original_classes)
 			# classes = 
@@ -166,15 +226,43 @@ class GenerateHandler(BaseHandler):
 				for subject in class_distribution:
 					distribution = class_distribution[subject]['distribution']
 					for i in range(4, 0, -1):
+						tries = 0
 						while distribution[str(i)] != 0:
-							randomday, randomtime = get_random_day_for_duration(class_distribution[subject]['possibilities'], i)
-							print randomday, i, subject, randomtime
+							if tries > 10:
+								print "giving up"
+								inner_fail = True
+								break
+
+							try:
+								randomday, randomtime = get_random_day_for_duration(class_distribution[subject]['possibilities'], i, routine)
+							except:
+								tries += 1
+								continue	
+							# print class_distribution[subject]['possibilities']
+							# print randomday, i, subject, randomtime
 							# delete class_distribution[subject]['possibilities'][randomday]
-							class_distribution[subject]['possibilities'].pop(randomday, None)
+							# class_distribution[subject]['possibilities'].pop(randomday, None)
+							# print class_distribution[subject]['possibilities']
+							routine[randomday].append({
+								'subject': subject,
+								'teacher': class_distribution[subject]['teacher'],
+								'timing': copy.deepcopy(randomtime)
+								})
+							class_distribution[subject]['possibilities'][randomday] = {}
+							# print "--"
+							print routine
+
+
+
+
+							# for day in routine:
+							# 	for class_ in routine[day]:
+							# 		print day, class_
+
 
 							distribution[str(i)] -= 1 #reduce total classes
 							# print distribution[str[i]]
 
 		self.response.headers['Content-Type'] = 'application/json'
-		self.write(json.dumps(original_classes,sort_keys=True, indent=4))
-		# self.write(json.dumps(classes,sort_keys=True, indent=4))
+		# self.write(json.dumps(original_classes,sort_keys=True, indent=4))
+		self.write(json.dumps(classes,sort_keys=True, indent=4))
