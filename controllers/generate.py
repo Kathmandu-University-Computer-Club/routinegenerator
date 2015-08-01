@@ -74,9 +74,18 @@ def findTeachingTime(subject, available_teaching_time, total_classes, class_dura
 
 
 def get_random_day_for_duration(possibilities, duration):
-	keys = [key for key in possibilities if possibilities[key] != {}]
-	print keys
-	return "sunday"
+	keys = [key for key in possibilities if possibilities[key] != {} and duration in possibilities[key]]
+	# print keys
+	# print possibilities
+	# return "sunday"
+	r = keys[random.randint(0, len(keys) - 1)]
+	# now delete from possibilities of class and from teacher's avaliable timing
+	# rtime = 
+	# print possibilities[r]
+	# print "__"
+	# print possibilities[r][duration]
+
+	return r, random.choice(possibilities[r][duration])
 
 class GenerateHandler(BaseHandler):
 	def get(self):
@@ -143,6 +152,8 @@ class GenerateHandler(BaseHandler):
 
 
 
+
+
 		total_tries = 0
 		original_classes = copy.deepcopy(classes)
 		while total_tries < 1:
@@ -156,9 +167,14 @@ class GenerateHandler(BaseHandler):
 					distribution = class_distribution[subject]['distribution']
 					for i in range(4, 0, -1):
 						while distribution[str(i)] != 0:
-							randomday = get_random_day_for_duration(class_distribution[subject]['possibilities'], i)
+							randomday, randomtime = get_random_day_for_duration(class_distribution[subject]['possibilities'], i)
+							print randomday, i, subject, randomtime
+							# delete class_distribution[subject]['possibilities'][randomday]
+							class_distribution[subject]['possibilities'].pop(randomday, None)
+
 							distribution[str(i)] -= 1 #reduce total classes
 							# print distribution[str[i]]
 
 		self.response.headers['Content-Type'] = 'application/json'
-		self.write(json.dumps(classes,sort_keys=True, indent=4))
+		self.write(json.dumps(original_classes,sort_keys=True, indent=4))
+		# self.write(json.dumps(classes,sort_keys=True, indent=4))
