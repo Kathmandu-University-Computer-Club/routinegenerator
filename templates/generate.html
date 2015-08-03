@@ -1,0 +1,80 @@
+{% extends "base_template.html" %}
+{% block content %}
+		<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col">
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Routine</h4>
+
+					
+				</div>
+			</div>
+		</section>
+		
+		<section id="routine_prototype" class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
+				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
+				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+					<h4 class="mdl-cell mdl-cell--12-col">Routine</h4>
+				</div>
+					<table class="mdl-data-table mdl-js-data-table" style="width:100%;">
+					  <thead>
+					    <tr>
+					      <th class="mdl-data-table__cell--non-numeric">Day</th>
+					      <th class="mdl-data-table__cell--non-numeric">1</th>
+					      <th class="mdl-data-table__cell--non-numeric">2</th>
+					      <th class="mdl-data-table__cell--non-numeric">3</th>
+					      <th class="mdl-data-table__cell--non-numeric">4</th>
+					      <th class="mdl-data-table__cell--non-numeric">5</th>
+					      <th class="mdl-data-table__cell--non-numeric">6</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+						
+						<!-- {% for faculty in faculties %} -->
+<!-- 							<tr>
+								<td class="mdl-data-table__cell--non-numeric">{{faculty.id}}</td>
+								<td class="mdl-data-table__cell--non-numeric">{{faculty.faculty_name}}</td>
+								<td class="mdl-data-table__cell--non-numeric" data-department_id="{{faculty.department_id}}">{{faculty.department_name}}</td>
+							</tr>
+ -->						
+ <!-- {% endfor %} -->
+					  </tbody>
+					</table>
+				</div>	
+			</section>
+
+{% endblock %}
+
+{% block currentPage %}generate{% endblock %}
+
+{% block extraScript %}
+	<script type="text/javascript">
+		console.log('loading...');
+		$.getJSON('/generateAjax', function(r) {
+			var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+			var prototype = $('#routine_prototype')
+			for (var a in r) {
+				var e = prototype.clone().removeAttr('id');
+				days.forEach(function(d) {
+					var tr = $('<tr/>').appendTo($('tbody', e));
+					for (var j = 0; j < 7; j++) {
+						tr.append($('<td/>', {
+							class: 'mdl-data-table__cell--non-numeric'
+						}));
+					}
+					var tds = tr.children();
+					tds.eq(0).html(d);
+					var rou = r[a].routine[d];
+					for (var j = 0; j < rou.length; j++) {
+						var timing =  rou[j].timing;
+						for (var k = timing[0]; k <= timing[1]; k++) {
+							tds.eq(k).html('<div style="font-weight:700;">' + rou[j].subject + '</div><div>' + rou[j].teacher.name + '</div>');
+						} 
+					}
+				});
+				prototype.before(e);
+			}
+		});
+	</script>
+{% endblock %}
+

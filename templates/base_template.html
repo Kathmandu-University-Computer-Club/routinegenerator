@@ -16,7 +16,9 @@
         <div class="mdl-layout__header-row">
           <span class="mdl-layout-title">{{layoutTitle}}</span>
           <div class="mdl-layout-spacer"></div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <!-- <button id="btnGenerate" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Generate</button> -->
+          <a href="/generate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Generate</a>
+<!--           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
             <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
               <i class="material-icons">search</i>
             </label>
@@ -32,12 +34,14 @@
             <li class="mdl-menu__item">About</li>
             <li class="mdl-menu__item">Contact</li>
             <li class="mdl-menu__item">Legal information</li>
-          </ul>
+          </ul> -->
         </div>
       </header>
-      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+      <!-- <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50"> -->
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-900 mdl-color-text--blue-50">
         <header class="demo-drawer-header">
-          <img src="images/user.jpg" class="demo-avatar">
+          <div style="font-weight:700;font-size:20px;margin-left:20px;padding-bottom:20px;">AUTO ROUTINE GENERATOR</div>
+<!--           <img src="images/user.jpg" class="demo-avatar">
           <div class="demo-avatar-dropdown">
             <span>hello@example.com</span>
             <div class="mdl-layout-spacer"></div>
@@ -49,16 +53,16 @@
               <li class="mdl-menu__item">info@example.com</li>
               <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
             </ul>
-          </div>
+          </div> -->
         </header>
-        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a class="mdl-navigation__link" href="/course"><i class="mdl-color-text--blue-grey-400 material-icons">chrome_reader_mode</i>Course</a>
-          <a class="mdl-navigation__link" href="/department"><i class="mdl-color-text--blue-grey-400 material-icons">school</i>Department</a>
-          <a class="mdl-navigation__link" href="/faculty"><i class="mdl-color-text--blue-grey-400 material-icons">business</i>Faculty</a>
-          <a class="mdl-navigation__link" href="classcourse"><i class="mdl-color-text--blue-grey-400 material-icons">report</i>Class Course</a>
-          <a class="mdl-navigation__link" href="/teacher"><i class="mdl-color-text--blue-grey-400 material-icons">face</i>Teacher</a>
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-800">
+          <a class="mdl-navigation__link" href="/course"><i class="mdl-color-text--blue-white-400 material-icons">chrome_reader_mode</i>Course</a>
+          <a class="mdl-navigation__link" href="/department"><i class="mdl-color-text--blue-white-400 material-icons">school</i>Department</a>
+          <a class="mdl-navigation__link" href="/faculty"><i class="mdl-color-text--blue-white-400 material-icons">business</i>Faculty</a>
+          <a class="mdl-navigation__link" href="/teacher"><i class="mdl-color-text--blue-white-400 material-icons">face</i>Teacher</a>
+          <a class="mdl-navigation__link" href="classcourse"><i class="mdl-color-text--blue-white-400 material-icons">report</i>Class Course</a>
           <div class="mdl-layout-spacer"></div>
-          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons">help_outline</i></a>
+          <!-- <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-white-400 material-icons">help_outline</i>Generate</a> -->
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
@@ -67,10 +71,6 @@
         {% endblock %}
       </main>
     </div>
-
-
-
-
 
 	<div id="popupWrapper">
 		<div id="alert" class="popup">

@@ -73,15 +73,19 @@ html, body {
   font-weight: 500;
 }
 .demo-layout .demo-navigation .mdl-navigation__link:hover {
-  background-color: #00BCD4;
-  color: #37474F;
+  background-color: #002244;
+  /*color: #37474F;*/
+  color: #FFFFFF;
 }
 .demo-navigation .mdl-navigation__link .material-icons {
   font-size: 24px;
+  /*color: rgba(255, 255, 255, 0.56);*/
   color: rgba(255, 255, 255, 0.56);
   margin-right: 32px;
 }
-
+.demo-navigation .mdl-navigation__link:hover .material-icons {
+  color: #fff;
+}
 .demo-content {
   max-width: 1080px;
 }

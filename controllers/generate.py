@@ -145,7 +145,7 @@ def get_random_day_for_duration(possibilities, duration, routine):
 
 	return r, random.choice(possibilities[r][duration])
 
-class GenerateHandler(BaseHandler):
+class GenerateAjaxHandler(BaseHandler):
 	def get(self):
 		teachers = db.GqlQuery("Select * from Teacher")
 		teachers_timing = {}
@@ -168,7 +168,12 @@ class GenerateHandler(BaseHandler):
 				},
 				'class_distribution': {
 
-				} 
+				},
+				'details': {
+					'faculty': classCourse.faculty,
+					'year': classCourse.year,
+					'semester': classCourse.semester
+				}
 			}
 
 			eCourse = eval(classCourse.course)
@@ -243,9 +248,13 @@ class GenerateHandler(BaseHandler):
 							# delete class_distribution[subject]['possibilities'][randomday]
 							# class_distribution[subject]['possibilities'].pop(randomday, None)
 							# print class_distribution[subject]['possibilities']
+							t = Teacher.get_by_id(class_distribution[subject]['teacher'])
 							routine[randomday].append({
 								'subject': subject,
-								'teacher': class_distribution[subject]['teacher'],
+								'teacher': {
+									'id': t.key().id(),
+									'name': t.teacher_name,
+								},
 								'timing': copy.deepcopy(randomtime)
 								})
 							class_distribution[subject]['possibilities'][randomday] = {}
@@ -265,4 +274,11 @@ class GenerateHandler(BaseHandler):
 
 		self.response.headers['Content-Type'] = 'application/json'
 		# self.write(json.dumps(original_classes,sort_keys=True, indent=4))
+
 		self.write(json.dumps(classes,sort_keys=True, indent=4))
+
+
+class GenerateHandler(BaseHandler):
+	def get(self):
+		# departments = db.GqlQuery("SELECT * from Department ORDER BY department_name")
+		self.render("generate.html")
