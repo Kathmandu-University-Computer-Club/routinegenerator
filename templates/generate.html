@@ -14,7 +14,8 @@
 			<div class="mdl-card mdl-cell mdl-cell--12-col" style="background:transparent">
 				<!-- <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing"> -->
 				<div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
-					<h4 class="mdl-cell mdl-cell--12-col">Routine</h4>
+					<h4 class="routinefor mdl-cell mdl-cell--12-col">Routine</h4>
+
 				</div>
 					<table class="mdl-data-table mdl-js-data-table" style="width:100%;">
 					  <thead>
@@ -52,9 +53,11 @@
 		console.log('loading...');
 		$.getJSON('/generateAjax', function(r) {
 			var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-			var prototype = $('#routine_prototype')
+			var prototype = $('#routine_prototype');
 			for (var a in r) {
 				var e = prototype.clone().removeAttr('id');
+				var details = r[a].details;
+				$('.routinefor', e).html(details.faculty + " " + details.year + " year " + details.semester + " semester");
 				days.forEach(function(d) {
 					var tr = $('<tr/>').appendTo($('tbody', e));
 					for (var j = 0; j < 7; j++) {
@@ -74,6 +77,7 @@
 				});
 				prototype.before(e);
 			}
+			prototype.hide();
 		});
 	</script>
 {% endblock %}
